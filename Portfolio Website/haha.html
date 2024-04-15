@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock, Paper, Scissors Game</title>
+    <style>
+        /* Add your CSS styling here */
+        /* For example, style the buttons */
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rock, Paper, Scissors Game</h1>
+    <label for="player1Name">Player 1 Name:</label>
+    <input type="text" id="player1Name" placeholder="Enter Name">
+    <br>
+    <label for="player2Name">Player 2 Name:</label>
+    <input type="text" id="player2Name" placeholder="Enter Name">
+    <br>
+
+    <button class="button" onclick="selectMove('rock', 1)">Rock</button>
+    <button class="button" onclick="selectMove('paper', 1)">Paper</button>
+    <button class="button" onclick="selectMove('scissors', 1)">Scissors</button>
+    <br>
+    <button class="button" onclick="selectMove('rock', 2)">Rock</button>
+    <button class="button" onclick="selectMove('paper', 2)">Paper</button>
+    <button class="button" onclick="selectMove('scissors', 2)">Scissors</button>
+    <p id="result"></p>
+    <p>Player 1: <span id="player1NameSpan"></span> Score: <span id="player1Score">0</span></p>
+    <p>Player 2: <span id="player2NameSpan"></span> Score: <span id="player2Score">0</span></p>
+    <button class="button" onclick="determineWinner()">Determine Winner</button>
+    <button class="button" onclick="resetGame()">Reset Game</button>
+
+    <script>
+        // JavaScript logic
+        let player1Move = '';
+        let player2Move = '';
+        let player1Score = 0;
+        let player2Score = 0;
+        let player1Name = "";
+        let player2Name = "";
+
+        function getPlayerNames() {
+            player1Name = document.getElementById("player1Name").value;
+            player2Name = document.getElementById("player2Name").value;
+            document.getElementById("player1NameSpan").innerText = player1Name;
+            document.getElementById("player2NameSpan").innerText = player2Name;
+        }
+
+        function selectMove(move, playerNumber) {
+            // Call getPlayerNames to ensure names are set before using them
+            getPlayerNames();
+            if (playerNumber === 1) {
+                player1Move = move;
+            } else {
+                player2Move = move;
+            }
+        }
+
+        function determineWinner() {
+            if (!player1Move || !player2Move) {
+                document.getElementById('result').innerText = "Both players must select their moves!";
+                return;
+            }
+
+            if (player1Move === player2Move) {
+                document.getElementById('result').innerText = "It's a tie!";
+            } else if (
+                (player1Move === 'rock' && player2Move === 'scissors') ||
+                (player1Move === 'paper' && player2Move === 'rock') ||
+                (player1Move === 'scissors' && player2Move === 'paper')
+            ) {
+                player1Score++;
+                document.getElementById('result').innerText = "Player 1 wins this round!";
+            } else {
+                player2Score++;
+                document.getElementById('result').innerText = "Player 2 wins this round!";
+            }
+
+            document.getElementById('player1Score').innerText = player1Score;
+            document.getElementById('player2Score').innerText = player2Score;
+
+            // Update scores and display winner for full game
+            if (player1Score >= 5) {
+                document.getElementById('result').innerText = player1Name + " wins the game!";
+            } else if (player2Score >= 5) {
+                document.getElementById('result').innerText = player2Name + " wins the game!";
+            }
+        }
+
+        function resetGame() {
+            player1Move = '';
+            player2Move = '';
+            player1Score = 0;
+            player2Score = 0;
+            document.getElementById('result').innerText = "";
+            document.getElementById('player1Score').innerText = player1Score;
+            document.getElementById('player2Score').innerText = player2Score;
+        }
+
+        // Call getPlayerNames on page load to ensure names are available
+        getPlayerNames();
+    </script>
+</body>
+</html>
